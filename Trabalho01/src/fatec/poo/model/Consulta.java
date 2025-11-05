@@ -5,6 +5,8 @@
  */
 package fatec.poo.model;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author LucasMorais
@@ -15,10 +17,12 @@ public class Consulta {
     private double valor;
     //private Medico medico; 
     //private Medicacao medicacoes; arraylist
-    //private Exame exames; arraylist
+    private ArrayList<Exame> exames; 
+    
     public Consulta(int codigo, String data) {
         this.codigo=codigo;
         this.data=data;
+        this.exames = new ArrayList<Exame>();
     }
 
     public int getCodigo() {
@@ -37,11 +41,17 @@ public class Consulta {
         this.valor = valor;
     }
     
-    /*public double calcValorTotalPagar(){
+    public void addExame(Exame exame){
+        exames.add(exame);
+        exame.setConsulta(this);
+    }
+    
+    public double calcValorTotalPagar(){
         double valorExames = 0.0;
         for(Exame exame : exames){
             valorExames+=exame.getValor();
         }
         return (valorExames + valor);
-    }*/
+    }
+    
 }
