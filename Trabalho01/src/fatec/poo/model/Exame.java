@@ -53,6 +53,10 @@ public class Exame {
     public String getDescricao() {
         return descricao;
     }
-    
+
+
+    public void setConsulta(Consulta consulta) {
+        this.consulta = consulta;
+    }
     
 }
