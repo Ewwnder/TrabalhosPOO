@@ -1,18 +1,26 @@
 package fatec.poo.model;
 
 import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 /**
  *
  * @author Nicolas Ap
  */
-public class Paciente {
+public class Paciente extends Pessoa {
     
     private LocalDate dataNascimento;
     private double altura;
     private double peso;
-    
-    //Implementar construtor
+    private ArrayList<Consulta> consultas;
+
+    public Paciente(String cpf, String nome, LocalDate dataNascimento) {
+        super(cpf, nome);
+        this.dataNascimento = dataNascimento;
+        this.consultas = new ArrayList<>();
+    }
 
     public void setAltura(double altura) {
         this.altura = altura;
@@ -22,8 +30,9 @@ public class Paciente {
         this.peso = peso;
     }
 
-    public LocalDate getDataNascimento() {
-        return dataNascimento;
+    public String getDataNascimento() {
+        DateTimeFormatter formatoData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return dataNascimento.format(formatoData);
     }
 
     public double getAltura() {
@@ -35,8 +44,14 @@ public class Paciente {
     }
     
     public double calcIMC(){
-        return this.peso/Math.pow(this.altura, 2);
+        return peso/Math.pow(altura, 2);
     }
     
-    //Implementar calculo de Idade
+    public int calcIdade(LocalDate data){
+        return Period.between(dataNascimento, data).getYears();
+    }
+    
+    public void addConsulta(Consulta consulta){
+        consultas.add(consulta);
+    }
 }
