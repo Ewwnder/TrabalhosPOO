@@ -15,14 +15,15 @@ public class Consulta {
     private int codigo;
     private String data;
     private double valor;
-    //private Medico medico; 
-    //private Medicacao medicacoes; arraylist
+    private Medico medico; 
+    private ArrayList<Medicacao> medicacoes; 
     private ArrayList<Exame> exames; 
     
     public Consulta(int codigo, String data) {
         this.codigo=codigo;
         this.data=data;
-        this.exames = new ArrayList<Exame>();
+        exames = new ArrayList<Exame>();
+        medicacoes = new ArrayList<Medicacao>();
     }
 
     public int getCodigo() {
@@ -46,6 +47,10 @@ public class Consulta {
         exame.setConsulta(this);
     }
     
+    public void addMedicacao(Medicacao medicacao){
+        medicacoes.add(medicacao);
+    }
+    
     public double calcValorTotalPagar(){
         double valorExames = 0.0;
         for(Exame exame : exames){
@@ -53,5 +58,7 @@ public class Consulta {
         }
         return (valorExames + valor);
     }
-    
+    public void setMedico(Medico medico){
+        this.medico = medico;
+    }
 }
