@@ -54,7 +54,6 @@ public class Exame {
         return descricao;
     }
 
-
     public void setConsulta(Consulta consulta) {
         this.consulta = consulta;
     }
