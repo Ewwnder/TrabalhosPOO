@@ -54,4 +54,8 @@ public class Paciente extends Pessoa {
     public void addConsulta(Consulta consulta){
         consultas.add(consulta);
     }
+
+    public ArrayList<Consulta> getConsultas(){
+        return consultas;
+    }
 }
