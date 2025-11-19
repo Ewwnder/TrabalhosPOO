@@ -7,7 +7,7 @@ Este projeto está sendo desenvolvido em **Java 8**, utilizando o **NetBeans 8.2
 
 ## Sobre o Projeto
 
-Este repositório contém os trabalhos propostos ao longo da disciplina de **POO**.  
+Este repositório contém o trabalho proposto ao longo da disciplina de **POO**.  
 Nosso objetivo é aplicar os conceitos fundamentais de orientação a objetos
 
 ---
