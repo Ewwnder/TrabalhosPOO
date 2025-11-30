@@ -313,7 +313,7 @@ public class GuiPaciente extends javax.swing.JFrame {
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         prepCon = new PreparaConexao("","");                          
         prepCon.setDriver("net.ucanaccess.jdbc.UcanaccessDriver");
-        prepCon.setConnectionString("jdbc:ucanaccess://C:\\\\Users\\\\LucasMorais\\\\Desktop\\\\Trabalhos POO\\\\Trabalho01\\\\src\\\\fatec\\\\poo\\\\basededados\\\\BDClinicaEricaLucasNicolas.accdb");
+        prepCon.setConnectionString("jdbc:ucanaccess://C:\\\\Users\\\\LucasMorais\\\\Desktop\\\\Trabalhos POO\\\\src\\\\fatec\\\\poo\\\\basededados\\\\BDClinicaEricaLucasNicolas.accdb");
         daoPaciente = new DaoPaciente(prepCon.abrirConexao());
     }//GEN-LAST:event_formWindowOpened
 
