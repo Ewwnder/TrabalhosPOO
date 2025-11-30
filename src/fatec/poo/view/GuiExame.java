@@ -5,6 +5,7 @@
  */
 package fatec.poo.view;
 
+import fatec.poo.control.DaoConsulta;
 import fatec.poo.control.DaoExame;
 import fatec.poo.control.PreparaConexao;
 import fatec.poo.model.Consulta;
@@ -23,10 +24,13 @@ public class GuiExame extends javax.swing.JFrame {
      */
     public GuiExame() {
         initComponents();
+        aplicarMascaraNaData();
     }
     
     private DaoExame daoExame = null;
+    private DaoConsulta daoConsulta = null;
     private Exame exame = null;
+    private Consulta consulta = null;
     private PreparaConexao prepCon = null;
     
     /**
@@ -287,82 +291,68 @@ public class GuiExame extends javax.swing.JFrame {
 
     
     private void btnInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInserirActionPerformed
-        try{
-            int codigo = Integer.parseInt(txtCodigo.getText());
-            int codConsulta = Integer.parseInt(txtCodigoConsulta.getText());
-            //Consulta consulta = daoConsulta.buscarConsulta(codConsulta);
-            String data = txtData.getText();
-            String horario = txtHorario.getText();
-            double valor = Double.parseDouble(txtValor.getText());
-            String descricao = txtDescricao.getText();
+
+   
+        exame = new Exame(Integer.parseInt(txtCodigo.getText()), txtDescricao.getText());
+        exame.setConsulta(consulta);
+        consulta.addExame(exame);
+        exame.setData(txtData.getText());
+        exame.setHorario(txtHorario.getText());
+        exame.setValor(Double.parseDouble(txtValor.getText()));
             
-            Exame exame = new Exame(codigo, descricao);
-            exame.setConsulta(consulta);
-            exame.setData(data);
-            exame.setHorario(horario);
-            exame.setValor(valor);
+        daoExame.inserirExame(exame);
             
-            daoExame.inserirExame(exame);
-            
-            btnInserir.setEnabled(false);
-            btnConsultar.setEnabled(true);
-            txtCodigo.setEnabled(true);
-            txtCodigo.setFocusable(true);
-            txtCodigoConsulta.setEnabled(false);
-            txtData.setEnabled(false);
-            txtDescricao.setEnabled(false);
-            txtHorario.setEnabled(false);
-            txtValor.setEnabled(false);
-            limparForms();
-            
-        }catch(Exception e){
-        
-        }
+        btnInserir.setEnabled(false);
+        btnConsultar.setEnabled(true);
+        txtCodigo.setEnabled(true);
+        txtCodigo.setFocusable(true);
+        txtCodigoConsulta.setEnabled(false);
+        txtData.setEnabled(false);
+        txtDescricao.setEnabled(false);
+        txtHorario.setEnabled(false);
+        txtValor.setEnabled(false);
+        limparForms();
+         
     }//GEN-LAST:event_btnInserirActionPerformed
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
-        try{
-            int codigo = Integer.parseInt(txtCodigo.getText());
-            String data = txtData.getText();
-            String horario = txtHorario.getText();
-            double valor = Double.parseDouble(txtValor.getText());
-            String descricao = txtDescricao.getText();
+        if (JOptionPane.showConfirmDialog(null, "Confirma Alteração?")== 0){
             
-            daoExame.alterarExame(codigo, descricao, data, horario, valor);
-            
-            btnConsultar.setEnabled(true);
-            txtCodigo.setEnabled(true);
-            txtCodigo.setFocusable(true);
-            txtCodigoConsulta.setEnabled(false);
-            txtData.setEnabled(false);
-            txtDescricao.setEnabled(false);
-            txtHorario.setEnabled(false);
-            txtValor.setEnabled(false);
-            limparForms();
+            exame = new Exame(exame.getCodigo(), txtDescricao.getText());
+            exame.setData(txtData.getText());
+            exame.setHorario(txtHorario.getText());
+            exame.setValor(Double.parseDouble(txtValor.getText()));
+            daoExame.alterarExame(exame);
+            /*Mantendo a associação binária conforme visto no exemplo prjExemplo_OO_BD_Parte_2
+            No arquivo GuiFuncionarioHorista na função de alterar.*/
+            exame.getConsulta().addExame(exame);
         }
-        catch(Exception e){
-            
-        }
-      
+        
+        btnConsultar.setEnabled(true);
+        txtCodigo.setEnabled(true);
+        txtCodigo.setFocusable(true);
+        txtCodigoConsulta.setEnabled(false);
+        txtData.setEnabled(false);
+        txtDescricao.setEnabled(false);
+        txtHorario.setEnabled(false);
+        txtValor.setEnabled(false);
+        limparForms();
+        
     }//GEN-LAST:event_btnAlterarActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-        try{
-            int codigo = Integer.parseInt(txtCodigo.getText());
-            daoExame.excluirExame(codigo);
-            btnConsultar.setEnabled(true);
-            txtCodigo.setEnabled(true);
-            txtCodigo.setFocusable(true);
-            txtCodigoConsulta.setEnabled(false);
-            txtData.setEnabled(false);
-            txtDescricao.setEnabled(false);
-            txtHorario.setEnabled(false);
-            txtValor.setEnabled(false);
-            limparForms();
-            
-        }catch(Exception e){
-            
+        if(JOptionPane.showConfirmDialog(null, "Confirma exclusão?")==0){
+            daoExame.excluirExame(exame);
         }
+        btnConsultar.setEnabled(true);
+        txtCodigo.setEnabled(true);
+        txtCodigo.setFocusable(true);
+        txtCodigoConsulta.setEnabled(false);
+        txtData.setEnabled(false);
+        txtDescricao.setEnabled(false);
+        txtHorario.setEnabled(false);
+        txtValor.setEnabled(false);
+        limparForms();
         
     }//GEN-LAST:event_btnExcluirActionPerformed
 
@@ -388,13 +378,14 @@ public class GuiExame extends javax.swing.JFrame {
         prepCon = new PreparaConexao("","");                          
         prepCon.setDriver("net.ucanaccess.jdbc.UcanaccessDriver");
         
-        prepCon.setConnectionString("jdbc:ucanaccess://C:\\\\Users\\\\LucasMorais\\\\Desktop\\\\Trabalhos POO\\\\Trabalho01\\\\src\\\\fatec\\\\poo\\\\basededados\\\\BDClinicaEricaLucasNicolas.accdb");
+        prepCon.setConnectionString("jdbc:ucanaccess://C:\\\\Users\\\\LucasMorais\\\\Desktop\\\\Trabalhos POO\\\\src\\\\fatec\\\\poo\\\\basededados\\\\BDClinicaEricaLucasNicolas.accdb");
         daoExame = new DaoExame(prepCon.abrirConexao());
+        daoConsulta = new DaoConsulta(prepCon.abrirConexao());
     }//GEN-LAST:event_formWindowOpened
 
     private void btnConsultarConsultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarConsultaActionPerformed
         int codConsulta = Integer.parseInt(txtCodigoConsulta.getText());
-        //Consulta consulta = daoConsulta.consultarConsulta(codConsulta);
+        Consulta consulta = daoConsulta.consultarConsulta(codConsulta);
         if(consulta==null){
            JOptionPane.showMessageDialog(null, "Consulta não cadastrada");
         }
