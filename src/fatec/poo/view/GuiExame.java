@@ -24,6 +24,7 @@ public class GuiExame extends javax.swing.JFrame {
      */
     public GuiExame() {
         initComponents();
+        aplicarMascaraNaData();
     }
     
     private DaoExame daoExame = null;
