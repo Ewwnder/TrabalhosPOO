@@ -133,7 +133,7 @@ public class GuiMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemMarcarExameActionPerformed
 
     private void jMenuItemPrescreverMedicacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemPrescreverMedicacaoActionPerformed
-        // TODO add your handling code here:
+        new GuiMedicacao().setVisible(true);
     }//GEN-LAST:event_jMenuItemPrescreverMedicacaoActionPerformed
 
     /**
