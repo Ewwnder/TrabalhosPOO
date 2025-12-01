@@ -334,7 +334,7 @@ public class GuiPaciente extends javax.swing.JFrame {
             paciente.setPeso(Double.parseDouble(txtPeso.getText()));
             daoPaciente.inserirPaciente(paciente);
             
-            JOptionPane.showMessageDialog(this, "Paciente cadastrado com sucesso!");
+       
             limparCampos();
             inicio();
         } catch(Exception e){
@@ -356,8 +356,6 @@ public class GuiPaciente extends javax.swing.JFrame {
             paciente.setPeso(Double.parseDouble(txtPeso.getText()));
 
             daoPaciente.alterarPaciente(paciente);
-
-            JOptionPane.showMessageDialog(this, "Paciente alterado com sucesso!");
 
             limparCampos();
             inicio();

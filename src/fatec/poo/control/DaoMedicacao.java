@@ -1,5 +1,6 @@
 package fatec.poo.control;
 
+import fatec.poo.model.Consulta;
 import fatec.poo.model.Medicacao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,16 +19,16 @@ public class DaoMedicacao {
         this.conn = conn;
     }
 
-    public void inserirMedicacao(Medicacao medicacao, int codConsulta) {
+    public void inserirMedicacao(Medicacao medicacao, Consulta consulta) {
         PreparedStatement ps = null;
         
         try {
-            ps = conn.prepareStatement("INSERT INTO tbMedicacao (Nome, Dosagem, QuantidadeDias, CodConsulta) VALUES (?,?,?,?)");
+            ps = conn.prepareStatement("INSERT INTO tbMedicacao (Nome, CodigoConsulta, Dosagem, QuantidadeDias) VALUES (?,?,?,?)");
             ps.setString(1, medicacao.getNome());
-            ps.setString(2, medicacao.getDosagem());
-            ps.setInt(3, medicacao.getQtdeDias());
-            ps.setInt(4, codConsulta);
-            
+            ps.setInt(2, consulta.getCodigo());
+            ps.setString(3, medicacao.getDosagem());
+            ps.setInt(4, medicacao.getQtdeDias());
+           
             ps.execute();
         } catch (SQLException ex) {
             System.out.println(ex.toString());
@@ -80,6 +81,25 @@ public class DaoMedicacao {
         } catch (SQLException e) {
             System.out.println("Erro excluir Medicacao: " + e.toString());
         }
+    }
+    
+    public Consulta consultarConsulta(String nome){
+        Consulta consulta = null;
+        PreparedStatement ps = null;
+
+        try {
+            ps = conn.prepareStatement("SELECT * FROM tbMedicacao WHERE Nome = ?");
+            ps.setString(1, nome);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                consulta = new DaoConsulta(conn).consultarConsulta(rs.getInt("CodigoConsulta"));       
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro consultar consulta: " + e.toString());
+        }
+
+        return consulta;
     }
     
 }

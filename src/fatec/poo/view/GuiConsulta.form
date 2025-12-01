@@ -8,6 +8,9 @@
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
     <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
   </SyntheticProperties>
+  <Events>
+    <EventHandler event="windowOpened" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="formWindowOpened"/>
+  </Events>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
@@ -48,11 +51,11 @@
                           <Component id="btnConsultarMedico" alignment="1" min="-2" pref="36" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="txtNomeMedico" alignment="0" min="-2" pref="238" max="-2" attributes="0"/>
-                          <Component id="txtNomePaciente" alignment="0" min="-2" pref="238" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="lblNomePaciente" pref="235" max="32767" attributes="0"/>
+                          <Component id="lblNomeMedico" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="btnConsultar" min="-2" max="-2" attributes="0"/>
@@ -83,14 +86,14 @@
                   <Component id="lblCPFMedico" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="txtCPFMedico" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnConsultarMedico" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtNomeMedico" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblNomeMedico" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="lblCPFPaciente" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="txtCPFPaciente" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnConsultarPaciente" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtNomePaciente" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblNomePaciente" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -165,6 +168,7 @@
     </Component>
     <Component class="javax.swing.JFormattedTextField" name="txtCPFMedico">
       <Properties>
+        <Property name="text" type="java.lang.String" value="   .   .   -"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
     </Component>
@@ -182,6 +186,7 @@
     </Component>
     <Component class="javax.swing.JFormattedTextField" name="txtCPFPaciente">
       <Properties>
+        <Property name="text" type="java.lang.String" value="   .   .   -"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
     </Component>
@@ -239,13 +244,23 @@
         <Property name="text" type="java.lang.String" value="CPF Paciente"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtNomePaciente">
+    <Component class="javax.swing.JLabel" name="lblNomeMedico">
       <Properties>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="org.netbeans.modules.form.compat2.border.SoftBevelBorderInfo">
+            <BevelBorder bevelType="1"/>
+          </Border>
+        </Property>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtNomeMedico">
+    <Component class="javax.swing.JLabel" name="lblNomePaciente">
       <Properties>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="org.netbeans.modules.form.compat2.border.SoftBevelBorderInfo">
+            <BevelBorder bevelType="1"/>
+          </Border>
+        </Property>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
     </Component>

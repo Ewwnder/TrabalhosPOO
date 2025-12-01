@@ -61,7 +61,7 @@ public class GuiExame extends javax.swing.JFrame {
         txtValor = new javax.swing.JTextField();
         btnConsultarConsulta = new javax.swing.JButton();
         lblCodigoConsulta1 = new javax.swing.JLabel();
-        txtMedico = new javax.swing.JTextField();
+        lblNomeMedico = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Marcar Exame");
@@ -132,7 +132,6 @@ public class GuiExame extends javax.swing.JFrame {
             }
         });
 
-        txtCodigoConsulta.setEditable(false);
         txtCodigoConsulta.setEnabled(false);
 
         txtDescricao.setEnabled(false);
@@ -154,7 +153,8 @@ public class GuiExame extends javax.swing.JFrame {
 
         lblCodigoConsulta1.setText("Médico");
 
-        txtMedico.setEnabled(false);
+        lblNomeMedico.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        lblNomeMedico.setEnabled(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -178,7 +178,7 @@ public class GuiExame extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(btnInserir)))
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(btnAlterar)
                                 .addGap(18, 18, 18)
@@ -189,8 +189,8 @@ public class GuiExame extends javax.swing.JFrame {
                                 .addComponent(btnConsultarConsulta, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(lblCodigoConsulta1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtMedico))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblNomeMedico, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblDescricao)
@@ -219,7 +219,7 @@ public class GuiExame extends javax.swing.JFrame {
                     .addComponent(txtCodigoConsulta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnConsultarConsulta)
                     .addComponent(lblCodigoConsulta1)
-                    .addComponent(txtMedico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblNomeMedico, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(19, 19, 19)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblDescricao)
@@ -262,14 +262,22 @@ public class GuiExame extends javax.swing.JFrame {
     
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
         int codExame = Integer.parseInt(txtCodigo.getText());
-        Exame exame = daoExame.consultarExame(codExame);
-        if(exame != null){
-            txtCodigoConsulta.setText(String.valueOf(exame.getConsulta().getCodigo()));
+        exame = daoExame.consultarExame(codExame);
+        if(exame == null){
+            txtCodigoConsulta.setEnabled(true);
+            btnConsultarConsulta.setEnabled(true); 
+            btnInserir.setEnabled(true);
+            btnConsultar.setEnabled(false);    
+         
+        }
+        else{
+            consulta = daoConsulta.consultarConsulta(exame.getConsulta().getCodigo());
+            txtCodigoConsulta.setText(String.valueOf(consulta.getCodigo()));
             txtDescricao.setText(exame.getDescricao());
             txtData.setText(exame.getData());
             txtHorario.setText(exame.getHorario());
             txtValor.setText(String.valueOf(exame.getValor()));
-            txtMedico.setText(exame.getConsulta().getMedico().getNome());
+            lblNomeMedico.setText(consulta.getMedico().getNome());
             btnAlterar.setEnabled(true);
             btnExcluir.setEnabled(true);
             
@@ -277,31 +285,22 @@ public class GuiExame extends javax.swing.JFrame {
             txtData.setEnabled(true);
             txtHorario.setEnabled(true);
             txtValor.setEnabled(true);
-           
-        }
-        else{
-            txtCodigoConsulta.setEnabled(true);
-            btnConsultarConsulta.setEnabled(true); 
-            btnInserir.setEnabled(true);
-            btnConsultar.setEnabled(false);
-          
-            
         }
     }//GEN-LAST:event_btnConsultarActionPerformed
 
     
     private void btnInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInserirActionPerformed
 
-   
         exame = new Exame(Integer.parseInt(txtCodigo.getText()), txtDescricao.getText());
         exame.setConsulta(consulta);
-        consulta.addExame(exame);
+        
         exame.setData(txtData.getText());
         exame.setHorario(txtHorario.getText());
         exame.setValor(Double.parseDouble(txtValor.getText()));
             
         daoExame.inserirExame(exame);
-            
+        consulta.addExame(exame);    
+        
         btnInserir.setEnabled(false);
         btnConsultar.setEnabled(true);
         txtCodigo.setEnabled(true);
@@ -318,16 +317,31 @@ public class GuiExame extends javax.swing.JFrame {
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
         if (JOptionPane.showConfirmDialog(null, "Confirma Alteração?")== 0){
             
-            exame = new Exame(exame.getCodigo(), txtDescricao.getText());
-            exame.setData(txtData.getText());
-            exame.setHorario(txtHorario.getText());
-            exame.setValor(Double.parseDouble(txtValor.getText()));
-            daoExame.alterarExame(exame);
+            /*OBS: Como a modelagem deixa explicita que a classe "EXAME" não possui setDescrição, sendo essa unicamente feita
+            através do método construtor do exame, sendo assim necessário criar um novo Exame provisório que coleta o código do exame
+            atualmente em contexto (o que foi coletado com o ConsultarExame). Após isso eu faço uma atualização do exame em contexto
+            this.exame = exameParaAlterar.
+            
+            Assim não fere a modelagem, e não fere o que foi solicitado:
+            "Na gui Marcar Exame, na operação de alteração, somente a descrição, data, horário e valor do 
+exame       podem ser alterados."
+            */
+            Exame exameParaAlterar = new Exame(exame.getCodigo(), txtDescricao.getText());
+           
+            exameParaAlterar.setConsulta(consulta); //evitar NullPointerException mantendo a consulta atual. O DaoExame vai ignorar isso no método alterar.
+            exameParaAlterar.setData(txtData.getText());
+            exameParaAlterar.setHorario(txtHorario.getText());
+            exameParaAlterar.setValor(Double.parseDouble(txtValor.getText()));
+            daoExame.alterarExame(exameParaAlterar);
+            
             /*Mantendo a associação binária conforme visto no exemplo prjExemplo_OO_BD_Parte_2
             No arquivo GuiFuncionarioHorista na função de alterar.*/
-            exame.getConsulta().addExame(exame);
+           
+            consulta.addExame(exameParaAlterar);
+            JOptionPane.showMessageDialog(this, "Alterado com sucesso.");
+            limparForms();
         }
-        
+     
         btnConsultar.setEnabled(true);
         txtCodigo.setEnabled(true);
         txtCodigo.setFocusable(true);
@@ -336,6 +350,8 @@ public class GuiExame extends javax.swing.JFrame {
         txtDescricao.setEnabled(false);
         txtHorario.setEnabled(false);
         txtValor.setEnabled(false);
+        btnAlterar.setEnabled(false);
+        btnExcluir.setEnabled(false);
         limparForms();
         
     }//GEN-LAST:event_btnAlterarActionPerformed
@@ -344,7 +360,10 @@ public class GuiExame extends javax.swing.JFrame {
         if(JOptionPane.showConfirmDialog(null, "Confirma exclusão?")==0){
             daoExame.excluirExame(exame);
         }
+        
         btnConsultar.setEnabled(true);
+        btnAlterar.setEnabled(false);
+        btnExcluir.setEnabled(false);
         txtCodigo.setEnabled(true);
         txtCodigo.setFocusable(true);
         txtCodigoConsulta.setEnabled(false);
@@ -362,7 +381,7 @@ public class GuiExame extends javax.swing.JFrame {
         txtData.setText("");
         txtDescricao.setText("");
         txtHorario.setText("");
-        txtMedico.setText("");
+        lblNomeMedico.setText("");
         txtValor.setText("");
     }
     
@@ -385,14 +404,18 @@ public class GuiExame extends javax.swing.JFrame {
 
     private void btnConsultarConsultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarConsultaActionPerformed
         int codConsulta = Integer.parseInt(txtCodigoConsulta.getText());
-        Consulta consulta = daoConsulta.consultarConsulta(codConsulta);
+        consulta = daoConsulta.consultarConsulta(codConsulta);
         if(consulta==null){
            JOptionPane.showMessageDialog(null, "Consulta não cadastrada");
         }
         else{
-            txtMedico.setText(consulta.getMedico().getNome());
+            lblNomeMedico.setText(consulta.getMedico().getNome());
             txtCodigoConsulta.setEnabled(false);
             btnConsultarConsulta.setEnabled(false);
+            txtDescricao.setEnabled(true);
+            txtData.setEnabled(true);
+            txtHorario.setEnabled(true);
+            txtValor.setEnabled(true);
         }
     }//GEN-LAST:event_btnConsultarConsultaActionPerformed
 
@@ -414,13 +437,13 @@ public class GuiExame extends javax.swing.JFrame {
     private javax.swing.JLabel lblData;
     private javax.swing.JLabel lblDescricao;
     private javax.swing.JLabel lblHorario;
+    private javax.swing.JLabel lblNomeMedico;
     private javax.swing.JLabel lblValor;
     private javax.swing.JTextField txtCodigo;
     private javax.swing.JTextField txtCodigoConsulta;
     private javax.swing.JFormattedTextField txtData;
     private javax.swing.JTextField txtDescricao;
     private javax.swing.JTextField txtHorario;
-    private javax.swing.JTextField txtMedico;
     private javax.swing.JTextField txtValor;
     // End of variables declaration//GEN-END:variables
 }
