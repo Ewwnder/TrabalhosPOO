@@ -48,7 +48,7 @@ public class DaoExame {
               //Fazendo a busca da consulta + associação binária
               Consulta consulta = new DaoConsulta(conn).consultarConsulta(rs.getInt("CodigoConsulta"));
               exame.setConsulta(consulta);
-              consulta.addExame(exame);
+              
            
           }
       
@@ -61,14 +61,13 @@ public class DaoExame {
     public void inserirExame(Exame exame){
         PreparedStatement ps = null;
         try{
-            ps = conn.prepareStatement("INSERT INTO tbExame (Codigo, CodigoConsulta, Descricao, Data, Horario, Valor) VALUES (?, ?, ?, ?, ?, ?");
+            ps = conn.prepareStatement("INSERT INTO tbExame (Codigo, CodigoConsulta, Descricao, Data, Horario, Valor) VALUES (?, ?, ?, ?, ?, ?)");
             ps.setInt(1, exame.getCodigo());
             ps.setInt(2, exame.getConsulta().getCodigo());
             ps.setString(3, exame.getDescricao());
             ps.setString(4, exame.getData());
             ps.setString(5, exame.getHorario());
             ps.setDouble(6, exame.getValor());
-            exame.getConsulta().addExame(exame); 
             ps.execute();
         }catch(SQLException ex){
             System.out.println(ex.toString());
@@ -79,7 +78,7 @@ public class DaoExame {
     public void alterarExame(Exame exame){
         PreparedStatement ps = null;
         try{
-            ps = conn.prepareStatement("UPDATE tbExame SET Descricao = ?, Data = ?, Valor = ?, Horario = ? WHERE Codigo = ?");
+            ps = conn.prepareStatement("UPDATE tbExame SET Descricao = ?, Data = ?, Horario = ?, Valor = ? WHERE Codigo = ?");
             ps.setString(1, exame.getDescricao());
             ps.setString(2, exame.getData());
             ps.setString(3, exame.getHorario());

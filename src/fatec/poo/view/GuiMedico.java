@@ -220,7 +220,7 @@ public class GuiMedico extends javax.swing.JFrame {
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         prepCon = new PreparaConexao("","");                          
         prepCon.setDriver("net.ucanaccess.jdbc.UcanaccessDriver");
-        prepCon.setConnectionString("jdbc:ucanaccess://C:\\Users\\User\\Desktop\\TrabalhosPOO\\src\\fatec\\poo\\basededados\\BDClinicaEricaLucasNicolas.accdb");
+        prepCon.setConnectionString("jdbc:ucanaccess://C:\\\\Users\\\\LucasMorais\\\\Desktop\\\\Trabalhos POO\\\\src\\\\fatec\\\\poo\\\\basededados\\\\BDClinicaEricaLucasNicolas.accdb");
         daoMedico = new DaoMedico(prepCon.abrirConexao());
     }//GEN-LAST:event_formWindowOpened
 
@@ -344,7 +344,7 @@ public class GuiMedico extends javax.swing.JFrame {
         txtCRM.setText("");
         cbxEspecialidade.setSelectedIndex(0);
     }
-    
+     
     private void inicio(){
         txtCPF.setEnabled(true);
         txtCPF.requestFocus();

@@ -39,12 +39,8 @@ public class DaoConsulta {
             if(rs.next()){
                 consulta = new Consulta(codConsulta, rs.getString("Data"));
                 consulta.setValor(rs.getDouble("Valor"));
-                Medico medico = new DaoMedico(conn).consultarMedico(rs.getString("CPFMedico")); //ERICAAAAAAAAAAAAAAAAAA
+                Medico medico = new DaoMedico(conn).consultarMedico(rs.getString("CPFMedico")); 
                 consulta.setMedico(medico);
-                medico.addConsulta(consulta);
-                //Esperando o Dimas responder:
-                //Paciente paciente = new DaoPaciente(conn).consultarPaciente(rs.getString("CPFPaciente"));
-                //consulta.setPaciente(
             }
         } catch(SQLException ex){
             System.out.println(ex.toString());
@@ -53,21 +49,16 @@ public class DaoConsulta {
         return consulta;
     }
     
-    public void inserirConsulta(Consulta consulta){
+    public void inserirConsulta(Consulta consulta, Paciente paciente){
         PreparedStatement ps = null;
         try{
-            ps = conn.prepareStatement("INSERT INTO tbConsulta (Codigo, CPFMedico, CPFPaciente, Data, Valor) VALUES (?, ?, ?, ?, ?");
+            ps = conn.prepareStatement("INSERT INTO tbConsulta (Codigo, CPFMedico, CPFPaciente, Data, Valor) VALUES (?, ?, ?, ?, ?)");
             ps.setInt(1, consulta.getCodigo());
             ps.setString(2, consulta.getMedico().getCpf());
-            //Esperando resposta do Dimas para manter o codigo abaixo:
-            //ps.setString(3, consulta.getPaciente().getCpf());
-            
+            ps.setString(3, paciente.getCpf());
             ps.setString(4, consulta.getData());
             ps.setDouble(5, consulta.getValor());
-      
-            consulta.getMedico().addConsulta(consulta);
-            //Se o código de cima for válido, o de baixo também deveria ser. Aguardando Dimas F. Cardoso:
-            //consulta.getPaciente().addConsulta(consulta);
+
             ps.execute();
         }catch(SQLException ex){ 
             System.out.println(ex.toString());
@@ -90,7 +81,7 @@ public class DaoConsulta {
         }  
     }
     
-     public void excluirConsulta(Consulta consulta){
+    public void excluirConsulta(Consulta consulta){
         PreparedStatement ps = null;
         try{
             ps = conn.prepareStatement("DELETE FROM tbConsulta WHERE Codigo = ?");
@@ -100,6 +91,24 @@ public class DaoConsulta {
         }catch(SQLException ex){
             System.out.println(ex.toString());
         }
+    }
+    
+
+    public Paciente consultarPaciente(int codConsulta) {
+        PreparedStatement ps = null;
+        Paciente paciente = null;
+        try{
+            ps = conn.prepareStatement("SELECT * FROM tbConsulta WHERE Codigo = ?");
+            ps.setInt(1, codConsulta);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                paciente = new DaoPaciente(conn).consultarPaciente(rs.getString("CPFPaciente"));
+            }
+ 
+        } catch(SQLException ex){
+             System.out.println(ex.toString());
+        }
+        return paciente;
     }
     
 }

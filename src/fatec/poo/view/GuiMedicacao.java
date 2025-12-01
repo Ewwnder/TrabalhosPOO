@@ -208,7 +208,7 @@ public class GuiMedicacao extends javax.swing.JFrame {
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         prepCon = new PreparaConexao("","");                          
         prepCon.setDriver("net.ucanaccess.jdbc.UcanaccessDriver");
-        prepCon.setConnectionString("jdbc:ucanaccess://C:\\Users\\User\\Desktop\\TrabalhosPOO\\src\\fatec\\poo\\basededados\\BDClinicaEricaLucasNicolas.laccdb");
+        prepCon.setConnectionString("jdbc:ucanaccess://C:\\\\Users\\\\LucasMorais\\\\Desktop\\\\Trabalhos POO\\\\src\\\\fatec\\\\poo\\\\basededados\\\\BDClinicaEricaLucasNicolas.accdb");
         daoMedicacao = new DaoMedicacao(prepCon.abrirConexao());
         daoConsulta = new DaoConsulta(prepCon.abrirConexao());
     }//GEN-LAST:event_formWindowOpened
@@ -258,9 +258,11 @@ public class GuiMedicacao extends javax.swing.JFrame {
             txtCodigoConsulta.requestFocus();
         } 
         else{
+            consulta = daoMedicacao.consultarConsulta(medicacao.getNome());
             txtDosagem.setText(medicacao.getDosagem());
             txtQuantidadeDias.setText(String.valueOf(medicacao.getQtdeDias()));
-
+            txtCodigoConsulta.setText(String.valueOf(consulta.getCodigo()));
+            lblMedico.setText(consulta.getMedico().getNome());
             txtNome.setEnabled(false);
             txtCodigoConsulta.setEnabled(false);
             btnConsultarConsulta.setEnabled(false);
@@ -283,25 +285,27 @@ public class GuiMedicacao extends javax.swing.JFrame {
         medicacao.setDosagem(txtDosagem.getText());
         medicacao.setQtdeDias(Integer.parseInt(txtQuantidadeDias.getText()));
         
-        daoMedicacao.inserirMedicacao(medicacao, consulta.getCodigo());
+        daoMedicacao.inserirMedicacao(medicacao, consulta);
         
         inicio();
     }//GEN-LAST:event_btnInserirActionPerformed
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
+        if(JOptionPane.showConfirmDialog(null, "Confirma alteração?")==0){
+            medicacao.setDosagem(txtDosagem.getText());
+            medicacao.setQtdeDias(Integer.parseInt(txtQuantidadeDias.getText()));
+            daoMedicacao.alterarMedicacao(medicacao);
+            JOptionPane.showMessageDialog(this, "Alteração feita com sucesso");
+            inicio();
+        }
         
-        medicacao.setDosagem(txtDosagem.getText());
-        medicacao.setQtdeDias(Integer.parseInt(txtQuantidadeDias.getText()));
-        
-        daoMedicacao.alterarMedicacao(medicacao);
-        
-        inicio();
     }//GEN-LAST:event_btnAlterarActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         if (JOptionPane.showConfirmDialog(this, "Confirmar exclusão?", "Exclusão", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 
             daoMedicacao.excluirMedicacao(txtNome.getText());
+            JOptionPane.showMessageDialog(this, "Exclusão feita com sucesso");
             inicio();
         }
     }//GEN-LAST:event_btnExcluirActionPerformed
