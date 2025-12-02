@@ -62,4 +62,12 @@ public class Exame {
         return this.consulta;
     }
     
+    /*OBS: esse método não está incluso na modelagem do Diagrama de Classes
+    porém na GUIExame é descrito que ao alterar um exame, a descrição pode ser alterada
+    para evitar ter que instanciar um novo objeto (para usar seu construtor) e
+    atualizar a descrição, tivemos que quebrar a modelagem. 
+    */
+    public void setDescricao(String descricao){
+        this.descricao = descricao;
+    }
 }

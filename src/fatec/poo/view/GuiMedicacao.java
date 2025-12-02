@@ -21,6 +21,12 @@ public class GuiMedicacao extends javax.swing.JFrame {
     /**
      * Creates new form GuiMedicacao
      */
+    private PreparaConexao prepCon = null;
+    private DaoMedicacao daoMedicacao = null;
+    private Medicacao medicacao = null;
+    private DaoConsulta daoConsulta = null;
+    private Consulta consulta = null;
+    
     public GuiMedicacao() {
         initComponents();
         inicio();
@@ -205,6 +211,7 @@ public class GuiMedicacao extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         prepCon = new PreparaConexao("","");                          
         prepCon.setDriver("net.ucanaccess.jdbc.UcanaccessDriver");
@@ -295,7 +302,6 @@ public class GuiMedicacao extends javax.swing.JFrame {
             medicacao.setDosagem(txtDosagem.getText());
             medicacao.setQtdeDias(Integer.parseInt(txtQuantidadeDias.getText()));
             daoMedicacao.alterarMedicacao(medicacao);
-            JOptionPane.showMessageDialog(this, "Alteração feita com sucesso");
             inicio();
         }
         
@@ -305,7 +311,6 @@ public class GuiMedicacao extends javax.swing.JFrame {
         if (JOptionPane.showConfirmDialog(this, "Confirmar exclusão?", "Exclusão", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 
             daoMedicacao.excluirMedicacao(txtNome.getText());
-            JOptionPane.showMessageDialog(this, "Exclusão feita com sucesso");
             inicio();
         }
     }//GEN-LAST:event_btnExcluirActionPerformed
@@ -362,9 +367,5 @@ public class GuiMedicacao extends javax.swing.JFrame {
     private javax.swing.JTextField txtQuantidadeDias;
     // End of variables declaration//GEN-END:variables
 
-    private PreparaConexao prepCon = null;
-    private DaoMedicacao daoMedicacao = null;
-    private Medicacao medicacao = null;
-    private DaoConsulta daoConsulta = null;
-    private Consulta consulta = null;
+   
 }
