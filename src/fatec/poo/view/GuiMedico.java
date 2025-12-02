@@ -21,6 +21,11 @@ public class GuiMedico extends javax.swing.JFrame {
     /**
      * Creates new form GuiMedico
      */
+    
+    private DaoMedico daoMedico = null;
+    private Medico medico = null;
+    private PreparaConexao prepCon = null;
+    
     public GuiMedico() {
         initComponents();
         aplicarMascaraNoCPF();
@@ -285,37 +290,32 @@ public class GuiMedico extends javax.swing.JFrame {
     }//GEN-LAST:event_btnConsultarActionPerformed
 
     private void btnInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInserirActionPerformed
-        try{
-            medico = new Medico(txtCPF.getText().replace(".", "").replace("-", ""), txtNome.getText(), txtCRM.getText(), cbxEspecialidade.getSelectedItem().toString());
-            medico.setEndereco(txtEndereco.getText());
-            medico.setTelefone(txtTelefone.getText());
+        
+        medico = new Medico(txtCPF.getText().replace(".", "").replace("-", ""), txtNome.getText(), txtCRM.getText(), cbxEspecialidade.getSelectedItem().toString());
+        medico.setEndereco(txtEndereco.getText());
+        medico.setTelefone(txtTelefone.getText());
+        daoMedico.inserirMedico(medico);
             
-            daoMedico.inserirMedico(medico);
-            
-            JOptionPane.showMessageDialog(this, "Medico cadastrado(a) com sucesso!");
-            limparCampos();
-            inicio();
-        } catch(Exception e){
-            JOptionPane.showMessageDialog(this, "Erro ao cadastrar: " + e.getMessage());
-        }
+        limparCampos();
+        inicio();
+        
     }//GEN-LAST:event_btnInserirActionPerformed
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
-        try{
-            medico = new Medico(medico.getCpf(), txtNome.getText(), txtCRM.getText(), cbxEspecialidade.getSelectedItem().toString());
+      
+        //necessário instanciar um novo objeto usando a mesma referência pois não possui todos os getters e setters.
+        medico = new Medico(medico.getCpf(), txtNome.getText(), txtCRM.getText(), cbxEspecialidade.getSelectedItem().toString());
                     
-            medico.setEndereco(txtEndereco.getText());
-            medico.setTelefone(txtTelefone.getText());
+        medico.setEndereco(txtEndereco.getText());
+        medico.setTelefone(txtTelefone.getText());
             
-            daoMedico.alterarMedico(medico);
+        daoMedico.alterarMedico(medico);
             
-            JOptionPane.showMessageDialog(this, "Medico alterado com sucesso!");
+           
 
-            limparCampos();
-            inicio();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Erro ao alterar: " + e.getMessage());
-        }
+        limparCampos();
+        inicio();
+        
     }//GEN-LAST:event_btnAlterarActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
@@ -386,7 +386,4 @@ public class GuiMedico extends javax.swing.JFrame {
     private javax.swing.JTextField txtTelefone;
     // End of variables declaration//GEN-END:variables
 
-    private DaoMedico daoMedico = null;
-    private Medico medico = null;
-    private PreparaConexao prepCon = null;
 }

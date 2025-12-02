@@ -22,16 +22,18 @@ public class GuiExame extends javax.swing.JFrame {
     /**
      * Creates new form GuiExame
      */
-    public GuiExame() {
-        initComponents();
-        aplicarMascaraNaData();
-    }
-    
     private DaoExame daoExame = null;
     private DaoConsulta daoConsulta = null;
     private Exame exame = null;
     private Consulta consulta = null;
     private PreparaConexao prepCon = null;
+    
+    public GuiExame() {
+        initComponents();
+        aplicarMascaraNaData();
+    }
+    
+   
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -316,29 +318,16 @@ public class GuiExame extends javax.swing.JFrame {
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
         if (JOptionPane.showConfirmDialog(null, "Confirma Alteração?")== 0){
-            
-            /*OBS: Como a modelagem deixa explicita que a classe "EXAME" não possui setDescrição, sendo essa unicamente feita
-            através do método construtor do exame, sendo assim necessário criar um novo Exame provisório que coleta o código do exame
-            atualmente em contexto (o que foi coletado com o ConsultarExame). Após isso eu faço uma atualização do exame em contexto
-            this.exame = exameParaAlterar.
-            
-            Assim não fere a modelagem, e não fere o que foi solicitado:
-            "Na gui Marcar Exame, na operação de alteração, somente a descrição, data, horário e valor do 
-exame       podem ser alterados."
-            */
-            Exame exameParaAlterar = new Exame(exame.getCodigo(), txtDescricao.getText());
-           
-            exameParaAlterar.setConsulta(consulta); //evitar NullPointerException mantendo a consulta atual. O DaoExame vai ignorar isso no método alterar.
-            exameParaAlterar.setData(txtData.getText());
-            exameParaAlterar.setHorario(txtHorario.getText());
-            exameParaAlterar.setValor(Double.parseDouble(txtValor.getText()));
-            daoExame.alterarExame(exameParaAlterar);
+
+            exame.setData(txtData.getText());
+            exame.setDescricao(txtDescricao.getText()); //OBS: no fatec.poo.model.exame tem um comentário sobre o uso do método setDescricao
+            exame.setHorario(txtHorario.getText());
+            exame.setValor(Double.parseDouble(txtValor.getText()));
+            daoExame.alterarExame(exame);
             
             /*Mantendo a associação binária conforme visto no exemplo prjExemplo_OO_BD_Parte_2
             No arquivo GuiFuncionarioHorista na função de alterar.*/
-           
-            consulta.addExame(exameParaAlterar);
-            JOptionPane.showMessageDialog(this, "Alterado com sucesso.");
+            consulta.addExame(exame);
             limparForms();
         }
      

@@ -23,6 +23,10 @@ public class GuiPaciente extends javax.swing.JFrame {
     /**
      * Creates new form GuiPaciente
      */
+    private DaoPaciente daoPaciente = null;
+    private Paciente paciente = null;
+    private PreparaConexao prepCon = null;
+    
     public GuiPaciente() {
         initComponents();
         aplicarMascaraNoCPF();
@@ -323,45 +327,41 @@ public class GuiPaciente extends javax.swing.JFrame {
 
     private void btnInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInserirActionPerformed
         
-        try{
-            DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            LocalDate dataNascimento = LocalDate.parse(txtData.getText(), formato);
         
-            paciente = new Paciente(txtCPF.getText().replace(".", "").replace("-", ""), txtNome.getText(), dataNascimento);
-            paciente.setEndereco(txtEndereco.getText());
-            paciente.setTelefone(txtTelefone.getText());
-            paciente.setAltura(Double.parseDouble(txtAltura.getText()));
-            paciente.setPeso(Double.parseDouble(txtPeso.getText()));
-            daoPaciente.inserirPaciente(paciente);
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate dataNascimento = LocalDate.parse(txtData.getText(), formato);
+        
+        paciente = new Paciente(txtCPF.getText().replace(".", "").replace("-", ""), txtNome.getText(), dataNascimento);
+        paciente.setEndereco(txtEndereco.getText());
+        paciente.setTelefone(txtTelefone.getText());
+        paciente.setAltura(Double.parseDouble(txtAltura.getText()));
+        paciente.setPeso(Double.parseDouble(txtPeso.getText()));
+        daoPaciente.inserirPaciente(paciente);
             
        
-            limparCampos();
-            inicio();
-        } catch(Exception e){
-            JOptionPane.showMessageDialog(this, "Erro ao cadastrar: " + e.getMessage());
-        }
+        limparCampos();
+        inicio();
+        
     }//GEN-LAST:event_btnInserirActionPerformed
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
         
-        try {
-            DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            LocalDate dataNascimento = LocalDate.parse(txtData.getText(), formato);
+       
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate dataNascimento = LocalDate.parse(txtData.getText(), formato);
 
-            paciente = new Paciente(paciente.getCpf(), txtNome.getText(), dataNascimento);
+        paciente = new Paciente(paciente.getCpf(), txtNome.getText(), dataNascimento);
 
-            paciente.setEndereco(txtEndereco.getText());
-            paciente.setTelefone(txtTelefone.getText());
-            paciente.setAltura(Double.parseDouble(txtAltura.getText()));
-            paciente.setPeso(Double.parseDouble(txtPeso.getText()));
+        paciente.setEndereco(txtEndereco.getText());
+        paciente.setTelefone(txtTelefone.getText());
+        paciente.setAltura(Double.parseDouble(txtAltura.getText()));
+        paciente.setPeso(Double.parseDouble(txtPeso.getText()));
 
-            daoPaciente.alterarPaciente(paciente);
+        daoPaciente.alterarPaciente(paciente);
 
-            limparCampos();
-            inicio();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Erro ao alterar: " + e.getMessage());
-        }
+        limparCampos();
+        inicio();
+        
     }//GEN-LAST:event_btnAlterarActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
@@ -444,7 +444,5 @@ public class GuiPaciente extends javax.swing.JFrame {
     private javax.swing.JTextField txtTelefone;
     // End of variables declaration//GEN-END:variables
 
-    private DaoPaciente daoPaciente = null;
-    private Paciente paciente = null;
-    private PreparaConexao prepCon = null;
+   
 }
